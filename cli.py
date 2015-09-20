@@ -1,10 +1,29 @@
 import requests
 import click
 
-BASE_URL = "http://challengehuntapp.appspot.com/"
+import exceptions
 
-def get_active_contests():
-  pass
+BASE_URL = ""
+
+def get_contests_data():
+  req = requests.get(BASE_URL)
+
+  if req.status_code == requests.codes.ok:
+    return req.json()
+  
+  return None
+
+def print_active_contests(platform):
+  contests_data = get_contests_data()
+
+  if contests_data:
+
+    for active_contest in contests_data["active"]:
+      pass
+      
+    
+  else:
+    click.secho("Data not available at the moment.", fg="red", bold=True)
 	
 
 @click.command()
@@ -17,7 +36,7 @@ def main(active, upcoming, platform):
   """A CLI for actve and upcoming programming challenges from various platforms"""
   try:
     if active:
-    	get_active_contests(platforms)
+    	get_active_contests(platform)
 
     get_all_contests()
   except IncorrectParametersException as e:
