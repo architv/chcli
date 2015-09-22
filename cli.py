@@ -13,7 +13,8 @@ def get_contests_data():
   if req.status_code == requests.codes.ok:
     return req.json()
   else:
-    click.secho("Couldn't get the data exiting...", fg="red", bold=True)
+    click.secho("Couldn't get the data", fg="red", bold=True)
+    click.secho("Exiting...", fg="red", bold=True)
     sys.exit()
 
 
