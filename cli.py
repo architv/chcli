@@ -5,7 +5,7 @@ import sys
 import exceptions
 from writer import get_writer
 
-BASE_URL = "http://challengehuntapp.appspot.com/"
+BASE_URL = ""
 
 def get_contests_data():
   req = requests.get(BASE_URL)
