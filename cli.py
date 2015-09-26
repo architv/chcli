@@ -2,10 +2,12 @@ import requests
 import click
 import sys
 
-import exceptions
-from writer import get_writer
+from local_exceptions import IncorrectParametersException
+import writers
+from platformids import platforms
 
-BASE_URL = ""
+BASE_URL = "http://challengehuntapp.appspot.com/"
+PLATFORM_IDS = platforms
 
 def get_contests_data():
   req = requests.get(BASE_URL)
@@ -20,16 +22,17 @@ def get_contests_data():
 
 def active_contests(platform):
   contests_data = get_contests_data()
-  writers.active_contests(contests_data["active"])
+  writers.write_active_contests(contests_data["active"])
   
 
 def upcoming_contests(platform):
   contests_data = get_contests_data()
-  writers.upcoming_contests(contests_data["pending"])
+  # writers.upcoming_contests(contests_data["pending"])
+
 
 def get_all_contests():
   contests_data = get_contests_data()
-  writers.all_contests(contests_data)
+  # writers.all_contests(contests_data)
 
 
 @click.command()
@@ -42,8 +45,7 @@ def main(active, upcoming, platform):
   """A CLI for actve and upcoming programming challenges from various platforms"""
   try:
     if active:
-    	active_contests(platform)
-      return
+    	  active_contests(platform)
 
     if upcoming:
       upcoming_contests(platform)
