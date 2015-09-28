@@ -12,6 +12,7 @@ def colors():
     CONTEST_NAME="yellow",
     HOST="green",
     MISC="blue",
+    TIME_TO_START="green",
   )
 
   return type('Enum', (), enums)
@@ -25,26 +26,53 @@ def format_date(date_object):
 
 def write_active_contests(contests):
   """Prints the contests in a pretty way"""
-  # click.secho("%-6s  %-30s    %-10s    %-10s    %-10s" % ("NO.", "NAME", "TIME LEFT", "DURATION", "PLATFORM"))
+  click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % ("NO.", "NAME", "ENDS IN", "DURATION", "PLATFORM"), fg="red")
 
   for index, contest in enumerate(contests):
-    time_left = format_date(contest["end"]) - datetime.utcnow()
-    hours, remainder = divmod(time_left.seconds, 3600)
+    time_to_start = format_date(contest["end"]) - datetime.utcnow()
+    hours, remainder = divmod(time_to_start.seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
-    time_left_string = ""
+    time_start_string = ""
 
-    if time_left.days > 0: 
-      time_left_string = "{0} days {1} hours".format(time_left.days, hours)
+    if time_to_start.days > 0: 
+      time_start_string = "{0} days {1} hours".format(time_to_start.days, hours)
     elif hours > 0:
-      time_left_string = "{0} hours {1} minutes".format(hours, minutes)
+      time_start_string = "{0} hours {1} minutes".format(hours, minutes)
     else:
-      time_left_string = "{0} minutes".format(minutes)
+      time_start_string = "{0} minutes".format(minutes)
 
     click.echo()
     click.secho("%-3s" % str(index+1), nl=False, bold=True)
     click.secho("  %-50s" %
                 (contest["contest_name"]), nl=False, fg=colors().CONTEST_NAME, bold=True)
-    click.secho("    %-20s" % time_left_string, nl=False, fg=colors().TIME_LEFT, bold=True)
+    click.secho("    %-20s" % time_start_string, nl=False, fg=colors().TIME_LEFT, bold=True)
+    click.secho("    %-11s" %
+                 str(contest["duration"]), nl=False, bold=True)
+    click.secho("    %-15s" % contest["host_name"], fg=colors().HOST, bold=True)
+
+
+def write_upcoming_contests(contests):
+  """Prints the upcomign contests in a pretty way"""
+  click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % ("NO.", "NAME", "STARTS IN", "DURATION", "PLATFORM"))
+
+  for index, contest in enumerate(contests):
+    time_to_start = format_date(contest["start"]) - datetime.utcnow()
+    hours, remainder = divmod(time_to_start.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    time_start_string = ""
+
+    if time_to_start.days > 0: 
+      time_start_string = "{0} days {1} hours".format(time_to_start.days, hours)
+    elif hours > 0:
+      time_start_string = "{0} hours {1} minutes".format(hours, minutes)
+    else:
+      time_start_string = "{0} minutes".format(minutes)
+
+    click.echo()
+    click.secho("%-3s" % str(index+1), nl=False, bold=True)
+    click.secho("  %-50s" %
+                (contest["contest_name"]), nl=False, fg=colors().CONTEST_NAME, bold=True)
+    click.secho("    %-20s" % time_start_string, nl=False, fg=colors().TIME_TO_START, bold=True)
     click.secho("    %-11s" %
                  str(contest["duration"]), nl=False, bold=True)
     click.secho("    %-15s" % contest["host_name"], fg=colors().HOST, bold=True)

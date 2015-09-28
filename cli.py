@@ -27,7 +27,7 @@ def active_contests(platform):
 
 def upcoming_contests(platform):
   contests_data = get_contests_data()
-  # writers.upcoming_contests(contests_data["pending"])
+  writers.write_upcoming_contests(contests_data["pending"])
 
 
 def get_all_contests():
@@ -41,6 +41,8 @@ def get_all_contests():
 @click.option('--platform', '-p', type=click.Choice(PLATFORM_IDS.keys()),
               help=("Choose the platform whose fixtures you want to see. "
                 "See platform codes for more info"))
+@click.option('--time', default=6,
+              help="The number of days in the past for which you want to see the contests")
 def main(active, upcoming, platform):
   """A CLI for actve and upcoming programming challenges from various platforms"""
   try:
