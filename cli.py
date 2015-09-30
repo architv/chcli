@@ -10,6 +10,18 @@ from utilities import time_difference
 BASE_URL = "http://challengehuntapp.appspot.com/"
 PLATFORM_IDS = contest_platforms
 
+def check_platforms(platforms):
+
+  if len(platforms) > 0:
+    if all(platform in PLATFORM_IDS for platform in platforms):
+      return True
+    else:
+      return False
+  
+  return True
+
+
+
 def get_contests_data():
   req = requests.get(BASE_URL)
 
@@ -66,7 +78,10 @@ def main(active, upcoming, platforms, time):
   """A CLI for actve and upcoming programming challenges from various platforms"""
   try:
     if active:
-      active_contests(platforms)
+      if check_platforms(platforms):
+        active_contests(platforms)
+      else:
+        raise IncorrectParametersException('Invlaid code for platform. Please check the platform ids')
       return
 
     if upcoming:
