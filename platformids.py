@@ -16,7 +16,7 @@ platforms = {
   "PE": "projecteuler.net", 
   "SN": "contests.snarknews.info", 
   "CG": "codingame.com", 
-  "Acmp": "acmp.ru", 
+  "ACMP": "acmp.ru", 
   "CFR": "codeforces.ru",
   "CF": "codeforces.com", 
   "ELY": "e-olymp.com",
