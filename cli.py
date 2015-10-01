@@ -85,7 +85,10 @@ def main(active, upcoming, platforms, time):
       return
 
     if upcoming:
-      upcoming_contests(platforms, time)
+      if check_platforms(platforms):
+        upcoming_contests(platforms, time)
+      else:
+        raise IncorrectParametersException('Invlaid code for platform. Please check the platform ids')
       return
 
     get_all_contests()
