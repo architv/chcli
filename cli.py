@@ -21,7 +21,6 @@ def check_platforms(platforms):
   return True
 
 
-
 def get_contests_data():
   req = requests.get(BASE_URL)
 
@@ -76,19 +75,16 @@ def get_all_contests():
               help="The number of days in the past for which you want to see the contests")
 def main(active, upcoming, platforms, time):
   """A CLI for actve and upcoming programming challenges from various platforms"""
+  if not check_platforms(platforms):
+    raise IncorrectParametersException('Invlaid code for platform. Please check the platform ids')
+
   try:
     if active:
-      if check_platforms(platforms):
-        active_contests(platforms)
-      else:
-        raise IncorrectParametersException('Invlaid code for platform. Please check the platform ids')
+      active_contests(platforms)
       return
 
     if upcoming:
-      if check_platforms(platforms):
-        upcoming_contests(platforms, time)
-      else:
-        raise IncorrectParametersException('Invlaid code for platform. Please check the platform ids')
+      upcoming_contests(platforms, time)
       return
 
     get_all_contests()

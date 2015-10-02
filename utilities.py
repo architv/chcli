@@ -3,6 +3,9 @@ from time import strptime
 
 from collections import namedtuple
 
+from local_exceptions import IncorrectParametersException
+
+
 def format_date(date_object):
   """Formats the date and returns the datetime object"""
   date_time = date_object.split("+")
