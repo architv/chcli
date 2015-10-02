@@ -35,12 +35,12 @@ def get_contests_data():
 def active_contests(platforms):
   """Gets all the active contests based on time and platforms"""
   contests_data = get_contests_data()
-  platform_filter = [PLATFORM_IDS[x] for x in platforms]
-
   if platforms:
-    active_challenges = [contest for contest in contests_data["active"] if contest["host_name"] in platform_filter]
+    platform_filter = [PLATFORM_IDS[x] for x in platforms]
   else:
-    active_challenges = contests_data["active"]
+    platform_filter = PLATFORM_IDS.values()
+
+  active_challenges = [contest for contest in contests_data["active"] if contest["host_name"] in platform_filter]
 
   writers.write_contests(active_challenges, "active")
   
@@ -48,14 +48,13 @@ def active_contests(platforms):
 def upcoming_contests(platforms, time):
   """Gets all the upcoming contests based on time and platforms"""
   contests_data = get_contests_data()
-  platform_filter = [PLATFORM_IDS[x] for x in platforms]
-
   if platforms:
-    upcoming_challenges = [contest for contest in contests_data["pending"] if contest["host_name"] in platform_filter 
-    and time_difference(contest["start"]).days <= time]
+    platform_filter = [PLATFORM_IDS[x] for x in platforms]
   else:
-    upcoming_challenges = [contest for contest in contests_data["pending"] 
-    if time_difference(contest["start"]).days <= time]
+    platform_filter = PLATFORM_IDS.values()
+
+  upcoming_challenges = [contest for contest in contests_data["pending"] if contest["host_name"] in platform_filter 
+    and time_difference(contest["start"]).days <= time]
 
   writers.write_contests(upcoming_challenges, "upcoming")
 
@@ -73,16 +72,21 @@ def hiring_contests():
   writers.write_contests(hiring_challenges, "hiring")
 
 
-def short_contests():
+def short_contests(platforms):
   """Gets all the short contests(less than or equal to 4 hours of duration)"""
   contests_data = get_contests_data()
   active_contests = contests_data["active"]
   upcoming_contests = contests_data["pending"]
+
+  if platforms:
+    platform_filter = [PLATFORM_IDS[x] for x in platforms]
+  else:
+    platform_filter = PLATFORM_IDS.values()
   get_challenge_duration = lambda x : int(x.split(":")[0]) if "days" not in x else float("inf")
   short_contests = [contest for contest in active_contests
-    if get_challenge_duration(contest["duration"]) <= 4]
+    if get_challenge_duration(contest["duration"]) <= 4 and contest["host_name"] in platform_filter]
   short_contests += [contest for contest in upcoming_contests
-    if get_challenge_duration(contest["duration"]) <= 4]
+    if get_challenge_duration(contest["duration"]) <= 4 and contest["host_name"] in platform_filter]
   writers.write_contests(short_contests, "short")
 
 
@@ -121,7 +125,7 @@ def main(active, upcoming, hiring, short, platforms, time):
       return
 
     if short:
-      short_contests()
+      short_contests(platforms)
       return
 
     get_all_contests()

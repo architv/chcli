@@ -39,11 +39,12 @@ def write_contests(contests, contest_type):
   for index, contest in enumerate(contests):
 
     time_diff_string = get_time_string(contest, contest_type)
+    contest_name = contest["contest_name"].encode('utf-8')
 
     click.echo()
     click.secho("%-3s" % str(index+1), nl=False, bold=True)
     click.secho("  %-50s" %
-                (contest["contest_name"]), nl=False, fg=colors().CONTEST_NAME, bold=True)
+                contest_name, nl=False, fg=colors().CONTEST_NAME, bold=True)
     click.secho("    %-20s" % time_diff_string, nl=False, fg=colors().TIME_TO_START, bold=True)
     click.secho("    %-11s" %
                  str(contest["duration"]), nl=False, bold=True)
