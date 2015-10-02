@@ -18,54 +18,64 @@ def colors():
 
   return type('Enum', (), enums)
 
+def challenge():
+  """Creates an enum for contest type"""
+  enums = dict(
+    ACTIVE="active",
+    UPCOMING="upcoming",
+    HIRING="hiring",
+    ALL="all",
+  )
 
-def write_active_contests(contests):
-  """Prints the contests in a pretty way"""
-  click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % 
-    ("NO.", "NAME", "ENDS IN", "DURATION", "PLATFORM"), fg="red")
+  return type('Enum', (), enums)
+
+
+def write_contests(contests, contest_type):
+  """Prints the contests based on the parameters passed"""
+  write_contest_header(contest_type)
 
   for index, contest in enumerate(contests):
-    time_left = time_difference(contest["end"])
-    time_end_string = ""
 
-    if time_left.days > 0: 
-      time_end_string = "{0} days {1} hours".format(time_left.days, time_left.hours)
-    elif time_left.hours > 0:
-      time_end_string = "{0} hours {1} minutes".format(time_left.hours, time_left.minutes)
-    else:
-      time_end_string = "{0} minutes".format(time_left.minutes)
+    time_diff_string = get_time_string(contest, contest_type)
 
     click.echo()
     click.secho("%-3s" % str(index+1), nl=False, bold=True)
     click.secho("  %-50s" %
                 (contest["contest_name"]), nl=False, fg=colors().CONTEST_NAME, bold=True)
-    click.secho("    %-20s" % time_end_string, nl=False, fg=colors().TIME_LEFT, bold=True)
+    click.secho("    %-20s" % time_diff_string, nl=False, fg=colors().TIME_TO_START, bold=True)
     click.secho("    %-11s" %
                  str(contest["duration"]), nl=False, bold=True)
     click.secho("    %-15s" % contest["host_name"], fg=colors().HOST, bold=True)
 
 
-def write_upcoming_contests(contests):
-  """Prints the upcomign contests in a pretty way"""
-  click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % 
+def get_time_string(contest, contest_type):
+  """Return a string with time for the contest to begin/end"""
+
+  if contest_type == challenge().ACTIVE:
+    time_diff = time_difference(contest["end"])
+  elif contest_type == challenge().UPCOMING:
+    time_diff = time_difference(contest["start"])
+  elif contest_type == challenge().HIRING:
+    time_diff = time_difference(contest["start"])
+  time_diff_string = ""
+
+  if time_diff.days > 0: 
+    time_diff_string = "{0} days {1} hours".format(time_diff.days, time_diff.hours)
+  elif time_diff.hours > 0:
+    time_diff_string = "{0} hours {1} minutes".format(time_diff.hours, time_diff.minutes)
+  else:
+    time_diff_string = "{0} minutes".format(time_diff.minutes)
+  return time_diff_string
+
+
+def write_contest_header(contest_type):
+  """Prints the header for the type of contest"""
+  if contest_type == challenge().ACTIVE:
+    click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % 
+    ("NO.", "NAME", "ENDS IN", "DURATION", "PLATFORM"))
+  elif contest_type == challenge().UPCOMING:
+    click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % 
     ("NO.", "NAME", "STARTS IN", "DURATION", "PLATFORM"))
-
-  for index, contest in enumerate(contests):
-    time_to_start = time_difference(contest["start"])
-    time_start_string = ""
-
-    if time_to_start.days > 0: 
-      time_start_string = "{0} days {1} hours".format(time_to_start.days, time_to_start.hours)
-    elif time_to_start.hours > 0:
-      time_start_string = "{0} hours {1} minutes".format(time_to_start.hours, time_to_start.minutes)
-    else:
-      time_start_string = "{0} minutes".format(time_to_start.minutes)
-
-    click.echo()
-    click.secho("%-3s" % str(index+1), nl=False, bold=True)
-    click.secho("  %-50s" %
-                (contest["contest_name"]), nl=False, fg=colors().CONTEST_NAME, bold=True)
-    click.secho("    %-20s" % time_start_string, nl=False, fg=colors().TIME_TO_START, bold=True)
-    click.secho("    %-11s" %
-                 str(contest["duration"]), nl=False, bold=True)
-    click.secho("    %-15s" % contest["host_name"], fg=colors().HOST, bold=True)
+  elif contest_type == challenge().HIRING:
+    click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % 
+    ("NO.", "NAME", "STARTS/ENDS IN", "DURATION", "PLATFORM"))    

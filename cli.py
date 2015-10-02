@@ -42,7 +42,7 @@ def active_contests(platforms):
   else:
     active_challenges = contests_data["active"]
 
-  writers.write_active_contests(active_challenges)
+  writers.write_contests(active_challenges, "active")
   
 
 def upcoming_contests(platforms, time):
@@ -57,7 +57,20 @@ def upcoming_contests(platforms, time):
     upcoming_challenges = [contest for contest in contests_data["pending"] 
     if time_difference(contest["start"]).days <= time]
 
-  writers.write_upcoming_contests(upcoming_challenges)
+  writers.write_contests(upcoming_challenges, "upcoming")
+
+
+def hiring_contests():
+  """Gets all the hiring challenges from all the availbale platforms"""
+  contests_data = get_contests_data()
+  active_contests = contests_data["active"]
+  upcoming_contests = contests_data["pending"]
+  get_challenge_name = lambda x : x.lower().split()
+  hiring_challenges = [contest for contest in active_contests
+    if "hiring" in get_challenge_name(contest["contest_name"])]
+  hiring_challenges += [contest for contest in upcoming_contests
+    if "hiring" in get_challenge_name(contest["contest_name"])]
+  writers.write_contests(hiring_challenges, "hiring")
 
 
 def get_all_contests():
@@ -68,13 +81,15 @@ def get_all_contests():
 @click.command()
 @click.option('--active', is_flag=True, help="Shows all the active contests")
 @click.option('--upcoming', is_flag=True, help="Shows all the upcoming contests")
+@click.option('--hiring', is_flag=True, help="Shows all the hiring contests")
 @click.option('--platforms', '-p', multiple=True,
   help=("Choose the platform whose fixtures you want to see. "
                 "See platform codes for more info"))
 @click.option('--time', '-t', default=6,
               help="The number of days in the past for which you want to see the contests")
-def main(active, upcoming, platforms, time):
+def main(active, upcoming, hiring, platforms, time):
   """A CLI for actve and upcoming programming challenges from various platforms"""
+
   if not check_platforms(platforms):
     raise IncorrectParametersException('Invlaid code for platform. Please check the platform ids')
 
@@ -86,6 +101,9 @@ def main(active, upcoming, platforms, time):
     if upcoming:
       upcoming_contests(platforms, time)
       return
+
+    if hiring:
+      hiring_contests()
 
     get_all_contests()
   except IncorrectParametersException as e:
