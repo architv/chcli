@@ -18,6 +18,7 @@ def colors():
 
   return type('Enum', (), enums)
 
+
 def challenge():
   """Creates an enum for contest type"""
   enums = dict(
@@ -25,6 +26,7 @@ def challenge():
     UPCOMING="upcoming",
     HIRING="hiring",
     ALL="all",
+    SHORT="short",
   )
 
   return type('Enum', (), enums)
@@ -55,7 +57,7 @@ def get_time_string(contest, contest_type):
     time_diff = time_difference(contest["end"])
   elif contest_type == challenge().UPCOMING:
     time_diff = time_difference(contest["start"])
-  elif contest_type == challenge().HIRING:
+  elif contest_type == challenge().HIRING or contest_type == challenge().SHORT:
     time_diff = time_difference(contest["start"])
   time_diff_string = ""
 
@@ -76,6 +78,6 @@ def write_contest_header(contest_type):
   elif contest_type == challenge().UPCOMING:
     click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % 
     ("NO.", "NAME", "STARTS IN", "DURATION", "PLATFORM"))
-  elif contest_type == challenge().HIRING:
+  elif contest_type == challenge().HIRING or contest_type == challenge().SHORT:
     click.secho("%-3s  %-50s    %-20s    %-11s    %-15s" % 
     ("NO.", "NAME", "STARTS/ENDS IN", "DURATION", "PLATFORM"))    

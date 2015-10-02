@@ -73,6 +73,19 @@ def hiring_contests():
   writers.write_contests(hiring_challenges, "hiring")
 
 
+def short_contests():
+  """Gets all the short contests(less than or equal to 4 hours of duration)"""
+  contests_data = get_contests_data()
+  active_contests = contests_data["active"]
+  upcoming_contests = contests_data["pending"]
+  get_challenge_duration = lambda x : int(x.split(":")[0]) if "days" not in x else float("inf")
+  short_contests = [contest for contest in active_contests
+    if get_challenge_duration(contest["duration"]) <= 4]
+  short_contests += [contest for contest in upcoming_contests
+    if get_challenge_duration(contest["duration"]) <= 4]
+  writers.write_contests(short_contests, "short")
+
+
 def get_all_contests():
   contests_data = get_contests_data()
   # writers.all_contests(contests_data)
@@ -82,12 +95,13 @@ def get_all_contests():
 @click.option('--active', is_flag=True, help="Shows all the active contests")
 @click.option('--upcoming', is_flag=True, help="Shows all the upcoming contests")
 @click.option('--hiring', is_flag=True, help="Shows all the hiring contests")
+@click.option('--short', is_flag=True, help="Shows all the short contests")
 @click.option('--platforms', '-p', multiple=True,
   help=("Choose the platform whose fixtures you want to see. "
                 "See platform codes for more info"))
 @click.option('--time', '-t', default=6,
               help="The number of days in the past for which you want to see the contests")
-def main(active, upcoming, hiring, platforms, time):
+def main(active, upcoming, hiring, short, platforms, time):
   """A CLI for actve and upcoming programming challenges from various platforms"""
 
   if not check_platforms(platforms):
@@ -104,6 +118,11 @@ def main(active, upcoming, hiring, platforms, time):
 
     if hiring:
       hiring_contests()
+      return
+
+    if short:
+      short_contests()
+      return
 
     get_all_contests()
   except IncorrectParametersException as e:
