@@ -11,6 +11,7 @@ BASE_URL = "http://challengehuntapp.appspot.com/"
 PLATFORM_IDS = contest_platforms
 
 def check_platforms(platforms):
+  """Checks if the platforms have a valid platform code"""
 
   if len(platforms) > 0:
     if all(platform in PLATFORM_IDS for platform in platforms):
@@ -22,6 +23,7 @@ def check_platforms(platforms):
 
 
 def get_contests_data():
+  """Gets all the data for all the contests"""
   req = requests.get(BASE_URL)
 
   if req.status_code == requests.codes.ok:
@@ -90,9 +92,20 @@ def short_contests(platforms):
   writers.write_contests(short_contests, "short")
 
 
-def get_all_contests():
+def get_all_contests(platforms):
+  """Gets all the contests and writes it to standard output"""
   contests_data = get_contests_data()
-  # writers.all_contests(contests_data)
+  active_contests = contests_data["active"]
+  upcoming_contests = contests_data["pending"]
+
+  if platforms:
+    platform_filter = [PLATFORM_IDS[x] for x in platforms]
+  else:
+    platform_filter = PLATFORM_IDS.values()
+
+  contests_data = [contest for contest in active_contests if contest["host_name"] in platform_filter]
+  contests_data += [contest for contest in upcoming_contests if contest["host_name"] in platform_filter]
+  writers.write_contests(contests_data, "all")
 
 
 @click.command()
@@ -101,7 +114,7 @@ def get_all_contests():
 @click.option('--hiring', is_flag=True, help="Shows all the hiring contests")
 @click.option('--short', is_flag=True, help="Shows all the short contests")
 @click.option('--platforms', '-p', multiple=True,
-  help=("Choose the platform whose fixtures you want to see. "
+  help=("Choose the platform whose contests you want to see. "
                 "See platform codes for more info"))
 @click.option('--time', '-t', default=6,
               help="The number of days in the past for which you want to see the contests")
@@ -128,7 +141,7 @@ def main(active, upcoming, hiring, short, platforms, time):
       short_contests(platforms)
       return
 
-    get_all_contests()
+    get_all_contests(platforms)
   except IncorrectParametersException as e:
     click.secho(e.message, fg="red", bold=True)
 

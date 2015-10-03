@@ -23,6 +23,5 @@ platforms = {
   "CFT": "ctftime.org", 
   "KA": "kaggle.com",
   "TC": "topcoder.com",
-  "GSU": "dl.gsu.by", 
   "FBHC": "facebook.com/hackercup"
 }
