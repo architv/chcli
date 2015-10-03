@@ -60,7 +60,7 @@ def upcoming_contests(platforms, time):
   upcoming_challenges = [contest for contest in contests_data["pending"] if contest["host_name"] in platform_filter 
     and time_difference(contest["start"]).days <= time]
 
-  writers.write_contests(upcoming_challenges, "upcoming")
+  return upcoming_challenges
 
 
 def hiring_contests():
@@ -73,7 +73,7 @@ def hiring_contests():
     if "hiring" in get_challenge_name(contest["contest_name"])]
   hiring_challenges += [contest for contest in upcoming_contests
     if "hiring" in get_challenge_name(contest["contest_name"])]
-  writers.write_contests(hiring_challenges, "hiring")
+  return hiring_challenges
 
 
 def short_contests(platforms):
@@ -91,7 +91,7 @@ def short_contests(platforms):
     if get_challenge_duration(contest["duration"]) <= 4 and contest["host_name"] in platform_filter]
   short_contests += [contest for contest in upcoming_contests
     if get_challenge_duration(contest["duration"]) <= 4 and contest["host_name"] in platform_filter]
-  writers.write_contests(short_contests, "short")
+  return short_contests
 
 
 def get_all_contests(platforms, time):
@@ -109,7 +109,7 @@ def get_all_contests(platforms, time):
   if contest["host_name"] in platform_filter and time_difference(contest["start"]).days <= time]
   contests_data += [contest for contest in upcoming_contests 
   if contest["host_name"] in platform_filter and time_difference(contest["start"]).days <= time]
-  writers.write_contests(contests_data, "all")
+  return contests_data
 
 
 @click.command()
