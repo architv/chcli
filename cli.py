@@ -14,7 +14,6 @@ PLATFORM_IDS = contest_platforms
 
 def check_platforms(platforms):
   """Checks if the platforms have a valid platform code"""
-
   if len(platforms) > 0:
     if all(platform in PLATFORM_IDS for platform in platforms):
       return True
@@ -140,30 +139,30 @@ def main(active, upcoming, hiring, short, goto, platforms, time):
       return
 
     if upcoming:
-      upcoming_contests = upcoming_contests(platforms, time)
+      upcoming_challenges = upcoming_contests(platforms, time)
       if goto:
         goto = int(goto)
-        webbrowser.open(upcoming_contests[goto - 1]["contest_url"], new=2)
+        webbrowser.open(upcoming_challenges[goto - 1]["contest_url"], new=2)
       else:
-        writers.write_contests(upcoming_contests, "upcoming")
+        writers.write_contests(upcoming_challenges, "upcoming")
       return
 
     if hiring:
-      hiring_contests = hiring_contests()
+      hiring_challenges = hiring_contests()
       if goto:
         goto = int(goto)
-        webbrowser.open(hiring_contests[goto - 1]["contest_url"], new=2)
+        webbrowser.open(hiring_challenges[goto - 1]["contest_url"], new=2)
       else:
-        writers.write_contests(hiring_contests, "hiring")
+        writers.write_contests(hiring_challenges, "hiring")
       return
 
     if short:
-      short_contests = short_contests(platforms)
+      short_challenges = short_contests(platforms)
       if goto:
         goto = int(goto)
-        webbrowser.open(short_contests[goto - 1]["contest_url"], new=2)
+        webbrowser.open(short_challenges[goto - 1]["contest_url"], new=2)
       else:
-        writers.write_contests(short_contests, "short")
+        writers.write_contests(short_challenges, "short")
       return
 
     all_contests = get_all_contests(platforms, time)

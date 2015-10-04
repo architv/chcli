@@ -2,8 +2,6 @@ import json
 
 import click
 
-from datetime import datetime, timedelta
-from time import strptime
 from utilities import time_difference
 
 def colors():
