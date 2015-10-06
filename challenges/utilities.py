@@ -5,8 +5,8 @@ from collections import namedtuple
 
 def format_date(date_object):
   """Formats the date and returns the datetime object"""
-  date_time = date_object.split("+")
-  return datetime.strptime(str(date_time[0]), "%Y-%m-%dT%H:%M:%S")
+  # date_time = date_object.split("+")
+  return datetime.strptime(str(date_object), "%Y-%m-%dT%H:%M:%S")
 
 
 def time_difference(target_time):

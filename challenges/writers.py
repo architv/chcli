@@ -57,7 +57,10 @@ def get_time_string(contest, contest_type):
   elif contest_type == challenge().UPCOMING:
     time_diff = time_difference(contest["start"])
   elif contest_type in [challenge().HIRING, challenge().SHORT, challenge().ALL]:
-    time_diff = time_difference(contest["start"])
+    try:
+      time_diff = time_difference(contest["start"])
+    except:
+      time_diff = time_difference(contest["end"])
   time_diff_string = ""
 
   if time_diff.days > 0: 

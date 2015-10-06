@@ -9,7 +9,7 @@ import writers
 from platformids import platforms as contest_platforms
 from utilities import time_difference
 
-BASE_URL = "http://challengehuntapp.appspot.com/"
+BASE_URL = "http://challengehuntapp.appspot.com/v2"
 PLATFORM_IDS = contest_platforms
 
 def check_platforms(platforms):
@@ -105,7 +105,7 @@ def get_all_contests(platforms, time):
     platform_filter = PLATFORM_IDS.values()
 
   contests_data = [contest for contest in active_contests 
-  if contest["host_name"] in platform_filter and time_difference(contest["start"]).days <= time]
+  if contest["host_name"] in platform_filter]
   contests_data += [contest for contest in upcoming_contests 
   if contest["host_name"] in platform_filter and time_difference(contest["start"]).days <= time]
   return contests_data
