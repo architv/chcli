@@ -76,7 +76,14 @@ $ challenges -t 2 # scores for all the platforms begining in the active or begin
 $ challenges --help
 ```
 
-### Team and team codes
+### Platform and Platform codes
+
+- TC: topcoder.com
+- HR: hackerrank.com
+- CF: codeforces.com
+- HE: hackerearth.com
+- CF: codechef.com
+- GCJ: Google Code Jam
 
 For a full list of supported platform and platform codes [see this](challenges/platformids.py).
 
