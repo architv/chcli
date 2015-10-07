@@ -82,7 +82,7 @@ $ challenges --help
 - HR: hackerrank.com
 - CF: codeforces.com
 - HE: hackerearth.com
-- CF: codechef.com
+- CC: codechef.com
 - GCJ: Google Code Jam
 
 For a full list of supported platform and platform codes [see this](challenges/platformids.py).
