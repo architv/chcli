@@ -5,7 +5,7 @@ Soccer CLI
 
 Programming Challenges for Hackers - a CLI for all the programming challenges. 
 
-![](http://imgur.com/R3OMV0A)
+![](http://i.imgur.com/R3OMV0A.gif)
 
 Install
 =====
@@ -83,13 +83,13 @@ Demo
 ====
 
 ### Active Challenges
-![](http://imgur.com/Siedm4R)
+![](http://i.imgur.com/Siedm4R.gif)
 
 ### Open a challenge in browser
-![](http://i.imgur.com/Peb9yga.gif)
+![](http://i.imgur.com/KkVgnLH.gif)
 
 ### Hiring Challenges
-![](http://imgur.com/c30BEqG)
+![](http://i.imgur.com/c30BEqG.gif)
 
 ### Short Challenges from a particular list of platform
 ![](http://i.imgur.com/SKQgona.png?1)
