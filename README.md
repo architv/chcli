@@ -86,7 +86,7 @@ Demo
 ![](http://i.imgur.com/Siedm4R.gif)
 
 ### Open a challenge in browser
-![](http://i.imgur.com/KkVgnLH.gif)
+![](http://i.imgur.com/mxsrc8C.gif)
 
 ### Hiring Challenges
 ![](http://i.imgur.com/c30BEqG.gif)
