@@ -62,7 +62,8 @@ $ challenges --short -p CF # get all the short challenges from codeforces
 ### Get hiring challenges
 
 ```bash
-$ challenges --hiring
+$ challenges --hiring # get all the hiring challenges
+```
 
 ### Get challenges from all platforms with a set time period
 
