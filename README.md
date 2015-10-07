@@ -84,6 +84,7 @@ $ challenges --help
 - HE: hackerearth.com
 - CC: codechef.com
 - GCJ: Google Code Jam
+- KA: kaggle.com
 
 For a full list of supported platform and platform codes [see this](challenges/platformids.py).
 
