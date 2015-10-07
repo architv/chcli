@@ -1,4 +1,4 @@
-Soccer CLI
+Challenge CLI
 =====
 
 [![PyPI version](https://badge.fury.io/py/challenge-cli.svg)](https://badge.fury.io/py/challenge-cli)
