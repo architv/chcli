@@ -5,7 +5,7 @@ Challenge CLI
 
 Programming Challenges for Hackers - a CLI for all the programming challenges. 
 
-![](http://i.imgur.com/R3OMV0A.gif)
+![](http://i.imgur.com/F7BbEH2.png)
 
 Install
 =====
