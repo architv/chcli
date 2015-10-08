@@ -123,7 +123,7 @@ def get_all_contests(platforms, time):
 @click.option('--time', '-t', default=6,
               help="The number of days in the past for which you want to see the contests")
 def main(active, upcoming, hiring, short, goto, platforms, time):
-  """A CLI for actve and upcoming programming challenges from various platforms"""
+  """A CLI for active and upcoming programming challenges from various platforms"""
 
   if not check_platforms(platforms):
     raise IncorrectParametersException('Invlaid code for platform. Please check the platform ids')
