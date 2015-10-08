@@ -108,7 +108,7 @@ Demo
 
 Todo
 ====
-- [ ] Fix allignment issues
+- [ ] Fix alignment issues
 
 
 Licence
