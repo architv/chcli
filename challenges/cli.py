@@ -5,7 +5,9 @@ import requests
 import click
 
 from local_exceptions import IncorrectParametersException
+
 import writers
+
 from platformids import platforms as contest_platforms
 from utilities import time_difference
 
@@ -15,11 +17,7 @@ PLATFORM_IDS = contest_platforms
 def check_platforms(platforms):
   """Checks if the platforms have a valid platform code"""
   if len(platforms) > 0:
-    if all(platform in PLATFORM_IDS for platform in platforms):
-      return True
-    else:
-      return False
-  
+    return all(platform in PLATFORM_IDS for platform in platforms):
   return True
 
 
@@ -34,14 +32,17 @@ def get_contests_data():
     click.secho("Exiting...", fg="red", bold=True)
     sys.exit()
 
+def get_platform_filter(platforms):
+    if platforms:
+        platform_filter = [PLATFORM_IDS[platform] for platform in platforms]
+    else:
+        platform_filter = PLATFORM_IDS.values()
+    return platform_filter
 
 def active_contests(platforms):
   """Gets all the active contests based on time and platforms"""
   contests_data = get_contests_data()
-  if platforms:
-    platform_filter = [PLATFORM_IDS[x] for x in platforms]
-  else:
-    platform_filter = PLATFORM_IDS.values()
+  platform_filter = get_platform_filter(platforms)
 
   active_challenges = [contest for contest in contests_data["active"] if contest["host_name"] in platform_filter]
 
@@ -51,10 +52,7 @@ def active_contests(platforms):
 def upcoming_contests(platforms, time):
   """Gets all the upcoming contests based on time and platforms"""
   contests_data = get_contests_data()
-  if platforms:
-    platform_filter = [PLATFORM_IDS[x] for x in platforms]
-  else:
-    platform_filter = PLATFORM_IDS.values()
+  platform_filter = get_platform_filter(platforms)
 
   upcoming_challenges = [contest for contest in contests_data["pending"] if contest["host_name"] in platform_filter 
     and time_difference(contest["start"]).days <= time]
@@ -81,10 +79,7 @@ def short_contests(platforms):
   active_contests = contests_data["active"]
   upcoming_contests = contests_data["pending"]
 
-  if platforms:
-    platform_filter = [PLATFORM_IDS[x] for x in platforms]
-  else:
-    platform_filter = PLATFORM_IDS.values()
+  platform_filter = get_platform_filter(platforms)
   get_challenge_duration = lambda x : int(x.split(":")[0]) if "days" not in x else float("inf")
   short_contests = [contest for contest in active_contests
     if get_challenge_duration(contest["duration"]) <= 4 and contest["host_name"] in platform_filter]
@@ -99,10 +94,7 @@ def get_all_contests(platforms, time):
   active_contests = contests_data["active"]
   upcoming_contests = contests_data["pending"]
 
-  if platforms:
-    platform_filter = [PLATFORM_IDS[x] for x in platforms]
-  else:
-    platform_filter = PLATFORM_IDS.values()
+  platform_filter = get_platform_filter(platforms)
 
   contests_data = [contest for contest in active_contests 
   if contest["host_name"] in platform_filter]
@@ -117,9 +109,9 @@ def get_all_contests(platforms, time):
 @click.option('--hiring', is_flag=True, help="Shows all the hiring contests")
 @click.option('--short', is_flag=True, help="Shows all the short contests")
 @click.option('--platforms', '-p', multiple=True,
-  help=("Choose the platform whose contests you want to see. "
-                "See platform codes for more info"))
-@click.argument('goto', nargs=1, required=False)
+              help=("Choose the platform whose contests you want to see. "
+                    "See platform codes for more info"))
+@click.argument('goto', nargs=1, required=False, type=click.INT)
 @click.option('--time', '-t', default=6,
               help="The number of days in the past for which you want to see the contests")
 def main(active, upcoming, hiring, short, goto, platforms, time):
@@ -132,7 +124,6 @@ def main(active, upcoming, hiring, short, goto, platforms, time):
     if active:
       active_challenges = active_contests(platforms)
       if goto:
-        goto = int(goto)
         webbrowser.open(active_challenges[goto - 1]["contest_url"], new=2)
       else:
         writers.write_contests(active_challenges, "active")
@@ -150,7 +141,6 @@ def main(active, upcoming, hiring, short, goto, platforms, time):
     if hiring:
       hiring_challenges = hiring_contests()
       if goto:
-        goto = int(goto)
         webbrowser.open(hiring_challenges[goto - 1]["contest_url"], new=2)
       else:
         writers.write_contests(hiring_challenges, "hiring")
@@ -167,7 +157,6 @@ def main(active, upcoming, hiring, short, goto, platforms, time):
 
     all_contests = get_all_contests(platforms, time)
     if goto:
-      goto = int(goto)
       webbrowser.open(all_contests[goto - 1]["contest_url"], new=2)
     else:
       writers.write_contests(all_contests, "all")
