@@ -17,7 +17,7 @@ PLATFORM_IDS = contest_platforms
 def check_platforms(platforms):
   """Checks if the platforms have a valid platform code"""
   if len(platforms) > 0:
-    return all(platform in PLATFORM_IDS for platform in platforms):
+    return all(platform in PLATFORM_IDS for platform in platforms)
   return True
 
 
