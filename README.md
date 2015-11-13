@@ -68,7 +68,7 @@ $ challenges --hiring # get all the hiring challenges
 ### Get challenges from all platforms with a set time period
 
 ```bash
-$ challenges -t 2 # scores for all the platforms begining in the active or begining in the next 2 days
+$ challenges -t 2 # get all the active challenges begining in the next 2 days
 ```
 
 ### Help
