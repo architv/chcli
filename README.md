@@ -44,7 +44,7 @@ $ challenges --upcoming
 ### Open a challenge in browser
 
 ```bash
-$ challenges --active <challenge_id> # opens the first active challenges in your browser
+$ challenges --active 1 # opens the first active challenges in your browser
 ```
 
 ### Get upcoming challenges from a particular platform
@@ -68,7 +68,7 @@ $ challenges --hiring # get all the hiring challenges
 ### Get challenges from all platforms with a set time period
 
 ```bash
-$ challenges -t 2 # get all the active challenges begining in the next 2 days
+$ challenges -t 2 # get all the active challenges and upcoming challenges which start in the next 2 days
 ```
 
 ### Help
