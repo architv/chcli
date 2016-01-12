@@ -44,7 +44,7 @@ $ challenges --upcoming
 ### Open a challenge in browser
 
 ```bash
-$ challenges --active 1 # opens the first active challenges in your browser
+$ challenges --active 1 # opens the first active challenge in your browser
 ```
 
 ### Get upcoming challenges from a particular platform
